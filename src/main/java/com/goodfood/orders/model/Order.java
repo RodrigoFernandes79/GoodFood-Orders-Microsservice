@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Orders")
+@Table(name = "orders")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,14 +20,15 @@ import java.util.List;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private LocalDateTime dataHora;
+    private LocalDateTime dateHour;
 
-    @NotNull @Enumerated(EnumType.STRING)
+    @NotNull
+    @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(cascade=CascadeType.PERSIST, mappedBy="pedido")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "order")
     private List<OrderItem> itens = new ArrayList<>();
 }
