@@ -13,6 +13,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Transactional
     @Modifying(clearAutomatically = true)
-    @Query("update Order p set o.status = :status where o = :order")
+    @Query("update Order o set o.status = :status where o = :order")
     void updateStatus(Status status, Order order);
 }

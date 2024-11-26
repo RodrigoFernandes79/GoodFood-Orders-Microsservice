@@ -1,5 +1,6 @@
 package com.goodfood.orders.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -27,5 +28,6 @@ public class OrderItem {
     private String description;
 
     @ManyToOne(optional=false)
+    @JsonIgnore
     private Order order;
 }
