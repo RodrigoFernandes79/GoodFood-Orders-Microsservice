@@ -28,6 +28,14 @@ public class OrderAMQPConfiguration {
     public Queue queueDetailsOrder() {
         return QueueBuilder
                 .nonDurable("payment.details-order")
+                .deadLetterExchange("payments.dlx") //configuring dlx Exchange
+                .build();
+    }
+
+    @Bean
+    public Queue queueDlqDetailsOrder() {
+        return QueueBuilder
+                .nonDurable("payment.details-order-dlq")
                 .build();
     }
 
@@ -39,11 +47,26 @@ public class OrderAMQPConfiguration {
     }
 
     @Bean
-    public Binding bindPaymentOrder(FanoutExchange fanoutExchange) {
+    public FanoutExchange deadLetterExchange() {
+        return ExchangeBuilder
+                .fanoutExchange("payments.dlx")
+                .build();
+    }
+
+    @Bean
+    public Binding bindPaymentOrder() {
         return BindingBuilder
                 .bind(queueDetailsOrder())
-                .to(fanoutExchange);
+                .to(fanoutExchange());
     }
+
+    @Bean
+    public Binding bindDlqPaymentOrder() {
+        return BindingBuilder
+                .bind(queueDlqDetailsOrder())
+                .to(deadLetterExchange());
+    }
+
     @Bean
     public RabbitAdmin createRabbitAdmin(ConnectionFactory conn) {
         return new RabbitAdmin(conn);
